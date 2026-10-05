@@ -1,9 +1,10 @@
-import { ORIGIN, BETTER_AUTH_SECRET } from '$app/env/private';
+import { ORIGIN, BETTER_AUTH_SECRET, HACKCLUB_CLIENT_ID, HACKCLUB_CLIENT_SECRET } from '$app/env/private';
 import { betterAuth } from 'better-auth/minimal';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
 import { db } from '#lib/server/db/index.ts';
+import { genericOAuth } from 'better-auth/plugins'
 
 export const auth = betterAuth({
 	baseURL: ORIGIN,
@@ -11,6 +12,17 @@ export const auth = betterAuth({
 	database: drizzleAdapter(db, { provider: 'pg' }),
 	emailAndPassword: { enabled: true },
 	plugins: [
-		sveltekitCookies(getRequestEvent) // make sure this is the last plugin in the array
+		sveltekitCookies(getRequestEvent), // make sure this is the last plugin in the array
+		genericOAuth({
+			config: [
+				{
+					providerId: "hackclub",
+					discoveryUrl: "https://hackclub.com/.well-known/openid-configuration",
+					clientId: HACKCLUB_CLIENT_ID,
+					clientSecret: HACKCLUB_CLIENT_SECRET,
+					scopes: ["openid", "profile", "email", "verification_status", "name", "slack_id"]
+				}
+			]
+		})
 	]
 });

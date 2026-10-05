@@ -7,5 +7,11 @@ export const variables = defineEnvVars({
 	},
 	BETTER_AUTH_SECRET: {
 		description: 'Secret used to sign tokens. For production use 32 characters generated with high entropy. See [Better Auth installation](https://www.better-auth.com/docs/installation).'
+	},
+	HACKCLUB_CLIENT_ID: {
+		description: 'The client ID for Hack Club OAuth.'
+	},
+	HACKCLUB_CLIENT_SECRET: {
+		description: 'The client secret for Hack Club OAuth.'
 	}
 });
