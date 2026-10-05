@@ -4,10 +4,10 @@ import type { Actions } from './$types';
 
 export const actions: Actions = {
     login: async ({ request}) => {
-        const res = await auth.api.signInWithOAuth2({
-            body: { providerId: "hackclub", callbackURL: '/'},
+        const res = await auth.api.signInSocial({
+            body: { provider: "hackclub", callbackURL: '/'},
             headers: request.headers
         })
-        redirect(302, res.url)
+        redirect(302, res.url!, { external: true})
     }
 }
